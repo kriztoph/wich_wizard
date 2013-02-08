@@ -1,27 +1,36 @@
 <%- model_class = Sandwich -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+
+<div class="hero-unit">
+  <h1>Welcome to Sandwich Awesomeness!</h1>
+  <p>Get started with Wich-Wizard by creating a sandwich!</p>
+  <p>
+    <%= link_to new_sandwich_path, :class => 'btn btn-primary btn-large' do %>
+      <i class="icon-edit"></i> New Sandwich Order
+    <% end %>
+  </p>
 </div>
+
+<div class="page-header">
+  <h3>Recent Sandwich Orders</h3>
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:type) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th>Ordered At</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @sandwiches.each do |sandwich| %>
       <tr>
-        <td><%= link_to sandwich.id, sandwich_path(sandwich) %></td>
         <td><%= sandwich.sandwich_type %></td>
         <td><%=l sandwich.created_at %></td>
+        <td>
+          <%= link_to "View Order", sandwich_path(sandwich), :class => 'btn btn-info btn-mini' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_sandwich_path,
-            :class => 'btn btn-primary' %>

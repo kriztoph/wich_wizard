@@ -1,21 +1,19 @@
 <%- model_class = Sandwich -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+  <h2>Sandwich Order</h2>
+</div>
+
+<div class="row">
+  <div class="span6 offset3">
+    <p class="lead text-center"><%= @quote.first.html_safe %>
+      <%= link_to @quote.last, :target => :_blank do %>
+        <i class="icon-eye-open"></i>
+      <% end %>
+    </p>
+  </div>
 </div>
 
 <dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:sandwich_type) %>:</strong></dt>
+  <dt><strong>Sandwich Type:</strong></dt>
   <dd><%= @sandwich.sandwich_type %></dd>
 </dl>
-
-<div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              sandwiches_path, :class => 'btn'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_sandwich_path(@sandwich), :class => 'btn' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              sandwich_path(@sandwich),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
-</div>

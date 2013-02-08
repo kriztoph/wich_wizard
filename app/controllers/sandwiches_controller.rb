@@ -14,6 +14,8 @@ class SandwichesController < ApplicationController
   # GET /sandwiches/1.json
   def show
     @sandwich = Sandwich.find(params[:id])
+    quote_request = Typhoeus::Request.get("http://www.iheartquotes.com/api/v1/random?format=text")
+    @quote = quote_request.body.split("http:")
 
     respond_to do |format|
       format.html # show.html.erb
@@ -44,9 +46,8 @@ class SandwichesController < ApplicationController
 
     respond_to do |format|
       if @sandwich.save
-        Twitter.direct_message_create("rebmaeneri",
-                                      "Wich-Wizard sandwich request! Please make a #{@sandwich.sandwich_type} sandwich. :)")
-        format.html { redirect_to @sandwich, notice: 'Sandwich was successfully created.' }
+        send_sandwich_notification
+        format.html { redirect_to root_path, notice: 'Sandwich Order was successfully created.' }
         format.json { render json: @sandwich, status: :created, location: @sandwich }
       else
         format.html { render action: "new" }
@@ -81,5 +82,21 @@ class SandwichesController < ApplicationController
       format.html { redirect_to sandwiches_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def send_sandwich_notification
+    short_url = sandwich_url(@sandwich)
+
+    if Rails.env.production?
+      Bitly.use_api_version_3
+      bitly = Bitly.new("o_6jq46k5fro", "R_ebc59fffb8247aebc474402254182912")
+      request = bitly.shorten(short_url)
+      short_url = request.short_url
+    end
+
+    Twitter.direct_message_create("eggplantpluto",
+                                  "Wich-Wizard sandwich request! #{short_url} :)")
   end
 end

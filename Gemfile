@@ -5,6 +5,8 @@ gem "therubyracer"
 gem "less-rails"
 gem 'twitter-bootstrap-rails'
 gem 'twitter'
+gem "typhoeus"
+gem 'bitly'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
