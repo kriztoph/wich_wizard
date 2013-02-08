@@ -1,11 +1,29 @@
-<%= form_for @sandwich_order, :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @sandwich_order, :html => {:class => 'form-horizontal'} do |f| %>
   <div class="control-group">
-    <%= f.label :orderer_name, :class => 'control-label' %>
+    <label class='control-label'>Your Name</label>
     <div class="controls">
       <%= f.text_field :orderer_name %>
     </div>
   </div>
-
+  <div class="row">
+    <div class="span1"></div>
+    <% @sandwich_ingredients.each do |ingredient_group| %>
+      <div class="span2">
+        <h4><%= ingredient_group.first.pluralize %>:</h4>
+        <ul class="ingredient_listing">
+          <% ingredient_group.last.each do |sandwich_ingredient| %>
+            <li class="<%= ingredient_group.first.parameterize %> ingredient_button"
+                data-ingredient-id="<%= sandwich_ingredient.id %>"
+                data-ingredient-category="<%= sandwich_ingredient.category.parameterize %>">
+              <%= check_box_tag "ingredients[]", sandwich_ingredient.id %>
+              <%= link_to sandwich_ingredient.ingredient, "#ingredients",
+                          :class => "btn btn-small" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

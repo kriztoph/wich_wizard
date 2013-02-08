@@ -2,7 +2,7 @@ class SandwichOrdersController < ApplicationController
   # GET /sandwich_orders
   # GET /sandwich_orders.json
   def index
-    @sandwich_orders = SandwichOrder.all
+    @sandwich_orders = SandwichOrder.order("created_at desc").all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,6 +27,7 @@ class SandwichOrdersController < ApplicationController
   # GET /sandwich_orders/new.json
   def new
     @sandwich_order = SandwichOrder.new
+    @sandwich_ingredients = SandwichIngredient.all.group_by { |sandwich_ingredient| sandwich_ingredient.category }
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,6 +44,11 @@ class SandwichOrdersController < ApplicationController
   # POST /sandwich_orders.json
   def create
     @sandwich_order = SandwichOrder.new(params[:sandwich_order])
+
+    selected_ingredients = params[:ingredients]
+    selected_ingredients.each do |sandwich_ingredient_id|
+      @sandwich_order.sandwich_order_ingredients << SandwichOrderIngredient.new(:sandwich_ingredient_id => sandwich_ingredient_id.to_i)
+    end
 
     respond_to do |format|
       if @sandwich_order.save

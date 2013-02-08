@@ -16,4 +16,13 @@
 <dl class="dl-horizontal">
   <dt><strong>Orderer Name:</strong></dt>
   <dd><%= @sandwich_order.orderer_name %></dd>
+
+  <dt><strong>Meats:</strong></dt>
+  <dd><%= sandwich_order_ingredients("Meat") %></dd>
+
+  <dt><strong>Veggies:</strong></dt>
+  <dd><%= sandwich_order_ingredients("Veggie") %></dd>
+
+  <dt><strong>Condiments:</strong></dt>
+  <dd><%= sandwich_order_ingredients("Condiment") %></dd>
 </dl>

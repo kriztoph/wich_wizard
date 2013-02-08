@@ -1,4 +1,7 @@
 WichWizard::Application.routes.draw do
+  resources :sandwich_ingredients
+
+
   resources :sandwich_orders
   root :to => 'sandwich_orders#index'
   # The priority is based upon order of creation:
