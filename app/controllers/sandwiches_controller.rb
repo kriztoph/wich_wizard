@@ -47,7 +47,7 @@ class SandwichesController < ApplicationController
     respond_to do |format|
       if @sandwich.save
         send_sandwich_notification
-        format.html { redirect_to root_path, notice: 'Sandwich Order was successfully created.' }
+        format.html { redirect_to root_path, notice: "Sandwich Order was successfully created. #{@notification_message}" }
         format.json { render json: @sandwich, status: :created, location: @sandwich }
       else
         format.html { render action: "new" }
@@ -96,7 +96,8 @@ class SandwichesController < ApplicationController
       short_url = request.short_url
     end
 
-    Twitter.direct_message_create("eggplantpluto",
-                                  "Wich-Wizard sandwich request! #{short_url} :)")
+    dm = Twitter.direct_message_create("eggplantpluto",
+                                       "Wich-Wizard sandwich request! #{short_url} :)")
+    @notification_message = "A notification has been sent to #{dm.attrs[:recipient][:name]}." if dm
   end
 end
