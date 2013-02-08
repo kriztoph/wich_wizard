@@ -52,7 +52,7 @@ describe SandwichesController do
       end
 
       it "should send a twitter dm to rebmaeneri" do
-        Twitter.should_receive(:direct_message_create).with("rebmaeneri", "Wich-Wizard sandwich request! Please make a Meatball sandwich. :)")
+        Twitter.should_receive(:direct_message_create).with(kind_of(String), kind_of(String)).once
         post :create, :sandwich => valid_attributes
       end
 
@@ -62,9 +62,9 @@ describe SandwichesController do
         assigns(:sandwich).should be_persisted
       end
 
-      it "redirects to the created sandwich" do
+      it "redirects to the root_path" do
         post :create, :sandwich => valid_attributes
-        response.should redirect_to(Sandwich.last)
+        response.should redirect_to(root_path)
       end
     end
 
