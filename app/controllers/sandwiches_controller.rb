@@ -44,6 +44,8 @@ class SandwichesController < ApplicationController
 
     respond_to do |format|
       if @sandwich.save
+        Twitter.direct_message_create("rebmaeneri",
+                                      "Wich-Wizard sandwich request! Please make a #{@sandwich.sandwich_type} sandwich. :)")
         format.html { redirect_to @sandwich, notice: 'Sandwich was successfully created.' }
         format.json { render json: @sandwich, status: :created, location: @sandwich }
       else

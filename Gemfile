@@ -4,6 +4,7 @@ gem 'rails', '3.2.11'
 gem "therubyracer"
 gem "less-rails"
 gem 'twitter-bootstrap-rails'
+gem 'twitter'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -24,8 +25,14 @@ end
 
 gem 'jquery-rails'
 
+group :test do
+  gem 'shoulda-matchers'
+end
+
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
+  gem 'factory_girl'
+  gem 'factory_girl_rails'
 end
 
 # To use ActiveModel has_secure_password
