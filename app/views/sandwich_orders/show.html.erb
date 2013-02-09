@@ -4,7 +4,7 @@
 </div>
 
 <div class="row">
-  <div class="span6 offset3">
+  <div class="span8 offset1">
     <p class="lead text-center"><%= @quote.first.html_safe %>
       <%= link_to @quote.last, :target => :_blank do %>
         <i class="icon-eye-open"></i>
@@ -20,6 +20,12 @@
   <dt><strong>Name:</strong></dt>
   <dd><%= @sandwich_order.orderer_name %></dd>
 
+  <dt><strong>Breads:</strong></dt>
+  <dd><%= sandwich_order_ingredients("Bread") %></dd>
+
+  <dt><strong>Cheeses:</strong></dt>
+  <dd><%= sandwich_order_ingredients("Cheese") %></dd>
+
   <dt><strong>Meats:</strong></dt>
   <dd><%= sandwich_order_ingredients("Meat") %></dd>
 
@@ -29,3 +35,7 @@
   <dt><strong>Condiments:</strong></dt>
   <dd><%= sandwich_order_ingredients("Condiment") %></dd>
 </dl>
+
+<div class="well">
+  <%= link_to "Back", sandwich_orders_path, :class => "btn btn-primary" %>
+</div>
