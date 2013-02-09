@@ -1,6 +1,12 @@
 class SandwichOrdersController < ApplicationController
   # GET /sandwich_orders
   # GET /sandwich_orders.json
+  before_filter :set_sandwich_ingredients, :only => [:new, :create]
+
+  def set_sandwich_ingredients
+    @sandwich_ingredients = SandwichIngredient.all.group_by { |sandwich_ingredient| sandwich_ingredient.category }
+  end
+
   def index
     @sandwich_orders = SandwichOrder.order("created_at desc").all
     if current_user
@@ -30,7 +36,6 @@ class SandwichOrdersController < ApplicationController
   # GET /sandwich_orders/new.json
   def new
     @sandwich_order = SandwichOrder.new
-    @sandwich_ingredients = SandwichIngredient.all.group_by { |sandwich_ingredient| sandwich_ingredient.category }
 
     respond_to do |format|
       format.html # new.html.erb
@@ -59,6 +64,7 @@ class SandwichOrdersController < ApplicationController
         format.html { redirect_to root_path, notice: "Sandwich Order was successfully created. #{@notification_message}" }
         format.json { render json: @sandwich_order, status: :created, location: @sandwich_order }
       else
+        flash[:error] = @sandwich_order.errors.full_messages.join(", ")
         format.html { render action: "new" }
         format.json { render json: @sandwich_order.errors, status: :unprocessable_entity }
       end

@@ -6,6 +6,8 @@ class SandwichOrder < ActiveRecord::Base
 
   belongs_to :user
 
+  validates_presence_of :orderer_name
+
   def ingredients_by_category(category)
     self.sandwich_ingredients.where(:category => category)
   end

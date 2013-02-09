@@ -4,10 +4,23 @@
 
 jQuery ->
   $('.ingredient_button').click ->
-    button_class = $(this).children('a').attr('class')
-    if button_class == "btn btn-small"
-      $(this).children('a').attr('class', 'btn-small btn-success')
-      $(this).children('input[type=checkbox]').prop('checked', 'checked')
+    ingredient_selected = $(this).siblings('input[type=checkbox]').prop('checked')
+    if ingredient_selected
+      $(this).attr('class', 'btn btn-small')
+      $(this).siblings('input[type=checkbox]').prop('checked', '')
     else
-      $(this).children('a').attr('class', 'btn btn-small')
-      $(this).children('input[type=checkbox]').prop('checked', '')
+      $(this).attr('class', 'btn-small btn-success')
+      $(this).siblings('input[type=checkbox]').prop('checked', 'checked')
+
+  $('.ingredient_listing input[type=checkbox]').click ->
+    ingredient_selected = $(this).prop('checked')
+    if ingredient_selected
+      $(this).siblings('a').attr('class', 'btn-small btn-success')
+    else
+      $(this).siblings('a').attr('class', 'btn btn-small')
+
+  $('.ingredient_checkbox').each ->
+    if $(this).prop('checked')
+      $(this).siblings('a').attr('class', 'btn-small btn-success')
+
+
