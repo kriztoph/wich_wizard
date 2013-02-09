@@ -33,7 +33,7 @@
   <div class="row-fluid">
     <div class="span2">
       <% if user_signed_in? %>
-        Logged in as <strong><%= current_user.email %></strong>.
+        Logged in as <strong><%= current_user.email %></strong>.<br/>
         <%= link_to 'Edit profile', edit_user_registration_path %> |
         <%= link_to "Logout", destroy_user_session_path, method: :delete %>
 
@@ -42,7 +42,7 @@
           <% if @user_sandwich_orders && !@user_sandwich_orders.empty? %>
             <% @user_sandwich_orders.each do |sandwich_order| %>
               <p>
-                <%= sandwich_order.created_at.to_s(:short) %><br/>
+                <%= sandwich_order.created_at.strftime("%b %e, %l:%M %p") %><br/>
                 <%= sandwich_order.sandwich_ingredients.pluck(:ingredient).join(", ") %>
                 <%= link_to "Quick Order", quick_order_sandwich_orders_path(:id => sandwich_order.id), :method => :post, :class => "btn btn-mini" %>
               </p>

@@ -14,7 +14,10 @@
 </div>
 
 <dl class="dl-horizontal">
-  <dt><strong>Orderer Name:</strong></dt>
+  <dt><strong>Order Date:</strong></dt>
+  <dd><%= @sandwich_order.created_at.strftime("%b %e, %l:%M %p") %></dd>
+
+  <dt><strong>Name:</strong></dt>
   <dd><%= @sandwich_order.orderer_name %></dd>
 
   <dt><strong>Meats:</strong></dt>

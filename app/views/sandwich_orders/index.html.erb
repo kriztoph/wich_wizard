@@ -26,7 +26,7 @@
     <% @sandwich_orders.each do |sandwich_order| %>
       <tr>
         <td><%= sandwich_order.orderer_name %></td>
-        <td><%=l sandwich_order.created_at %></td>
+        <td><%= sandwich_order.created_at.strftime("%b %e, %l:%M %p") %></td>
         <td>
           <%= link_to "View Order", sandwich_order_path(sandwich_order), :class => 'btn btn-info btn-mini' %>
         </td>
