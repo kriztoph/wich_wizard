@@ -57,7 +57,7 @@ class SandwichOrdersController < ApplicationController
   def create
     @sandwich_order = SandwichOrder.new(params[:sandwich_order])
 
-    selected_ingredients = params[:ingredients]
+    selected_ingredients = params[:ingredients] ||= []
     selected_ingredients.each do |sandwich_ingredient_id|
       @sandwich_order.sandwich_order_ingredients << SandwichOrderIngredient.new(:sandwich_ingredient_id => sandwich_ingredient_id.to_i)
     end
