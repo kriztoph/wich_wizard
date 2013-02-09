@@ -1,8 +1,12 @@
 WichWizard::Application.routes.draw do
+  devise_for :users
+
   resources :sandwich_ingredients
-
-
-  resources :sandwich_orders
+  resources :sandwich_orders do
+    collection do
+      post 'quick_order'
+    end
+  end
   root :to => 'sandwich_orders#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.

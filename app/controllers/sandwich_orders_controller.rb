@@ -3,6 +3,9 @@ class SandwichOrdersController < ApplicationController
   # GET /sandwich_orders.json
   def index
     @sandwich_orders = SandwichOrder.order("created_at desc").all
+    if current_user
+      @user_sandwich_orders = current_user.sandwich_orders
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -87,6 +90,26 @@ class SandwichOrdersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to sandwich_orders_url }
       format.json { head :no_content }
+    end
+  end
+
+  def quick_order
+    past_order_id = params[:id]
+    @previous_order = SandwichOrder.find(past_order_id)
+    @sandwich_order = SandwichOrder.new(:user_id => current_user.try(:id), :orderer_name => current_user.try(:full_name))
+    @previous_order.sandwich_ingredients.each do |sandwich_ingredient|
+      @sandwich_order.sandwich_order_ingredients << SandwichOrderIngredient.new(:sandwich_ingredient_id => sandwich_ingredient.id)
+    end
+
+    respond_to do |format|
+      if @sandwich_order.save
+        send_sandwich_notification
+        format.html { redirect_to root_path, notice: "Sandwich Order was successfully created. #{@notification_message}" }
+        format.json { render json: @sandwich_order, status: :created, location: @sandwich_order }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @sandwich_order.errors, status: :unprocessable_entity }
+      end
     end
   end
 

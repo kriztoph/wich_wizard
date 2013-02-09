@@ -5,15 +5,39 @@ describe SandwichOrdersController do
   # Sandwich. As you add validations to Sandwich, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {:orderer_name => "Kriz"}
+    { :orderer_name => "Kriz" }
+  end
+
+  def login_user
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    @user = create(:user, :id => 123)
+    sign_in @user
   end
 
 
   describe "GET index" do
-    it "assigns all sandwich_orders as @sandwich_orders" do
-      sandwich_order = create(:sandwich_order)
-      get :index
-      assigns(:sandwich_orders).should eq([sandwich_order])
+    context "logged in user" do
+      it "assigns all sandwich_orders as @sandwich_orders" do
+        login_user
+        sandwich_order = create(:sandwich_order)
+        get :index
+        assigns(:sandwich_orders).should eq([sandwich_order])
+      end
+      it "assigns the current users sandwich orders to @user_sandwich_orders" do
+        login_user
+        sandwich_order = create(:sandwich_order, :user_id => @user.id)
+        get :index
+        assigns(:user_sandwich_orders).should eq([sandwich_order])
+      end
+    end
+
+    context "not logged in" do
+      it "assigns all sandwich_orders as @sandwich_orders" do
+        controller.stub(:current_user) { nil }
+        sandwich_order = create(:sandwich_order)
+        get :index
+        assigns(:sandwich_orders).should eq([sandwich_order])
+      end
     end
   end
 
@@ -47,23 +71,23 @@ describe SandwichOrdersController do
     describe "with valid params" do
       it "creates a new SandwichOrder" do
         expect {
-          post :create, :sandwich_order => valid_attributes
+          post :create, :sandwich_order => valid_attributes, :ingredients => ["1", "3", "5"]
         }.to change(SandwichOrder, :count).by(1)
       end
 
       it "should send a twitter dm to rebmaeneri" do
         Twitter.should_receive(:direct_message_create).with(kind_of(String), kind_of(String)).once
-        post :create, :sandwich_order => valid_attributes
+        post :create, :sandwich_order => valid_attributes, :ingredients => ["1", "3", "5"]
       end
 
       it "assigns a newly created sandwich_order as @sandwich_order" do
-        post :create, :sandwich_order => valid_attributes
+        post :create, :sandwich_order => valid_attributes, :ingredients => ["1", "3", "5"]
         assigns(:sandwich_order).should be_a(SandwichOrder)
         assigns(:sandwich_order).should be_persisted
       end
 
       it "redirects to the root_path" do
-        post :create, :sandwich_order => valid_attributes
+        post :create, :sandwich_order => valid_attributes, :ingredients => ["1", "3", "5"]
         response.should redirect_to(root_path)
       end
     end
@@ -72,7 +96,7 @@ describe SandwichOrdersController do
       it "assigns a newly created but unsaved sandwich as @sandwich" do
         # Trigger the behavior that occurs when invalid params are submitted
         SandwichOrder.any_instance.stub(:save).and_return(false)
-        post :create, :sandwich_order => {}
+        post :create, :sandwich_order => {}, :ingredients => ["1", "3", "5"]
         assigns(:sandwich_order).should be_a_new(SandwichOrder)
       end
 
@@ -81,7 +105,7 @@ describe SandwichOrdersController do
         # Trigger the behavior that occurs when invalid params are submitted
         SandwichOrder.any_instance.stub(:save).and_return(false)
         SandwichOrder.any_instance.stub(:errors).and_return(:count => 0)
-        post :create, :id => sandwich_order.id.to_s, :sandwich_order => {}
+        post :create, :id => sandwich_order.id.to_s, :sandwich_order => {}, :ingredients => ["1", "3", "5"]
         response.should render_template("new")
       end
     end

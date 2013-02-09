@@ -1,5 +1,6 @@
 require 'spec_helper'
 
 describe SandwichOrderIngredient do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should belong_to :sandwich_order }
+  it { should belong_to :sandwich_ingredient }
 end

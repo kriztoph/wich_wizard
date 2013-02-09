@@ -7,6 +7,7 @@ gem 'twitter-bootstrap-rails'
 gem 'twitter'
 gem "typhoeus"
 gem 'bitly'
+gem 'devise'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 

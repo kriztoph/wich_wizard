@@ -10,6 +10,6 @@ require 'spec_helper'
 #     end
 #   end
 # end
-describe SandwichIngredientsHelper do
+describe SandwichOrdersHelper do
 
 end

@@ -2,9 +2,10 @@
   <div class="control-group">
     <label class='control-label'>Your Name</label>
     <div class="controls">
-      <%= f.text_field :orderer_name %>
+      <%= f.text_field :orderer_name, :value => current_user.try(:full_name) %>
     </div>
   </div>
+  <%= f.hidden_field :user_id, :value => current_user.try(:id) %>
   <div class="row">
     <div class="span1"></div>
     <% @sandwich_ingredients.each do |ingredient_group| %>

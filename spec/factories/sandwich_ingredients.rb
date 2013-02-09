@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :sandwich_ingredient do
-    category "MyString"
-    ingredient "MyString"
+    sequence(:category) {|n| "category#{n}"}
+    sequence(:ingredient) {|n| "ingredient#{n}"}
   end
 end
