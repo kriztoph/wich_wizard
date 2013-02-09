@@ -135,7 +135,7 @@ class SandwichOrdersController < ApplicationController
       short_url = request.short_url
     end
 
-    dm = Twitter.direct_message_create("eggplantpluto",
+    dm = Twitter.direct_message_create("generalthings",
                                        "Wich-Wizard sandwich request! #{short_url} :)")
 
     @notification_message = "A notification has been sent to #{dm.attrs[:recipient][:name]}." if dm
