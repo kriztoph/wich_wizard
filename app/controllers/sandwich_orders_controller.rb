@@ -2,6 +2,13 @@ class SandwichOrdersController < ApplicationController
   # GET /sandwich_orders
   # GET /sandwich_orders.json
   before_filter :set_sandwich_ingredients, :only => [:new, :create]
+  before_filter :set_recent_orders, :only => [:index, :new, :show]
+
+  def set_recent_orders
+    if current_user
+      @user_sandwich_orders = current_user.sandwich_orders.order("created_at desc")
+    end
+  end
 
   def set_sandwich_ingredients
     @sandwich_ingredients = SandwichIngredient.all.group_by { |sandwich_ingredient| sandwich_ingredient.category }
@@ -9,9 +16,6 @@ class SandwichOrdersController < ApplicationController
 
   def index
     @sandwich_orders = SandwichOrder.order("created_at desc").all
-    if current_user
-      @user_sandwich_orders = current_user.sandwich_orders
-    end
 
     respond_to do |format|
       format.html # index.html.erb
